@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 public class TrainConsistManagementApp {
 
@@ -7,9 +6,19 @@ public class TrainConsistManagementApp {
 
         System.out.println("=== Train Consist Management App ===");
 
-        List<String> bogies = new ArrayList<>();
+        LinkedList<String> consist = new LinkedList<>();
 
-        System.out.println("Train consist initialized.");
-        System.out.println("Initial number of bogies: " + bogies.size());
+        consist.add("Engine");
+        consist.add("Sleeper");
+        consist.add("AC");
+        consist.add("Cargo");
+        consist.add("Guard");
+
+        consist.add(2, "Pantry Car");
+
+        consist.removeFirst();
+        consist.removeLast();
+
+        System.out.println("Final Train Consist: " + consist);
     }
 }
