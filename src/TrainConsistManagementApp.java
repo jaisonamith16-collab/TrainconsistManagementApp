@@ -1,11 +1,19 @@
 import java.util.*;
-import java.util.stream.*;
+
+class InvalidCapacityException extends Exception {
+    public InvalidCapacityException(String message) {
+        super(message);
+    }
+}
 
 class Bogie {
     private String name;
     private int capacity;
 
-    public Bogie(String name, int capacity) {
+    public Bogie(String name, int capacity) throws InvalidCapacityException {
+        if (capacity <= 0) {
+            throw new InvalidCapacityException("Capacity must be greater than zero");
+        }
         this.name = name;
         this.capacity = capacity;
     }
@@ -21,32 +29,60 @@ class Bogie {
 
 public class TrainConsistManagementApp {
     public static void main(String[] args) {
-        List<Bogie> bogieList = new ArrayList<>();
+        try {
+            Bogie b1 = new Bogie("Sleeper", 72);
+            Bogie b2 = new Bogie("AC Chair", 56);
+            Bogie b3 = new Bogie("First Class", -10);
 
-        for (int i = 0; i < 10000; i++) {
-            bogieList.add(new Bogie("Sleeper", 72));
-            bogieList.add(new Bogie("AC Chair", 56));
-            bogieList.add(new Bogie("First Class", 24));
+            System.out.println(b1.getName() + " - " + b1.getCapacity());
+            System.out.println(b2.getName() + " - " + b2.getCapacity());
+            System.out.println(b3.getName() + " - " + b3.getCapacity());
+        } catch (InvalidCapacityException e) {
+            System.out.println(e.getMessage());
         }
+    }
+}
+import java.util.*;
 
-        long startLoop = System.nanoTime();
-        List<Bogie> loopResult = new ArrayList<>();
-        for (Bogie b : bogieList) {
-            if (b.getCapacity() > 60) {
-                loopResult.add(b);
-            }
+class InvalidCapacityException extends Exception {
+    public InvalidCapacityException(String message) {
+        super(message);
+    }
+}
+
+class Bogie {
+    private String name;
+    private int capacity;
+
+    public Bogie(String name, int capacity) throws InvalidCapacityException {
+        if (capacity <= 0) {
+            throw new InvalidCapacityException("Capacity must be greater than zero");
         }
-        long endLoop = System.nanoTime();
+        this.name = name;
+        this.capacity = capacity;
+    }
 
-        long startStream = System.nanoTime();
-        List<Bogie> streamResult = bogieList.stream()
-                .filter(b -> b.getCapacity() > 60)
-                .collect(Collectors.toList());
-        long endStream = System.nanoTime();
+    public String getName() {
+        return name;
+    }
 
-        System.out.println("Loop Time: " + (endLoop - startLoop));
-        System.out.println("Stream Time: " + (endStream - startStream));
-        System.out.println("Loop Result Size: " + loopResult.size());
-        System.out.println("Stream Result Size: " + streamResult.size());
+    public int getCapacity() {
+        return capacity;
+    }
+}
+
+public class TrainConsistManagementApp {
+    public static void main(String[] args) {
+        try {
+            Bogie b1 = new Bogie("Sleeper", 72);
+            Bogie b2 = new Bogie("AC Chair", 56);
+            Bogie b3 = new Bogie("First Class", -10);
+
+            System.out.println(b1.getName() + " - " + b1.getCapacity());
+            System.out.println(b2.getName() + " - " + b2.getCapacity());
+            System.out.println(b3.getName() + " - " + b3.getCapacity());
+        } catch (InvalidCapacityException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
