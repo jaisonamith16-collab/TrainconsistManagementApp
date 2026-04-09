@@ -1,80 +1,43 @@
-// Custom Runtime Exception
-class CargoSafetyException extends RuntimeException {
-    public CargoSafetyException(String message) {
-        super(message);
-    }
-}
+public class TrainConsistManagementApp
+{
 
-// Abstract Goods Bogie
-abstract class GoodsBogie {
-    protected String cargo;
+    // Linear Search Method
+    public static boolean searchBogie(String[] bogieIds, String searchKey) {
 
-    public abstract String getShape();
+        // Traverse array sequentially
+        for (int i = 0; i < bogieIds.length; i++) {
 
-    public void assignCargo(String cargoType) {
-        try {
-            System.out.println("\nAttempting to assign cargo: " + cargoType + " to " + getShape() + " bogie");
-
-            // Safety validation
-            if (getShape().equalsIgnoreCase("Rectangular") &&
-                    cargoType.equalsIgnoreCase("Petroleum")) {
-                throw new CargoSafetyException("Unsafe cargo! Petroleum cannot be assigned to Rectangular bogie.");
+            // Compare using equals()
+            if (bogieIds[i].equals(searchKey)) {
+                System.out.println("✅ Bogie ID " + searchKey + " found at position " + i);
+                return true; // Early termination
             }
-
-            // If safe
-            this.cargo = cargoType;
-            System.out.println("✅ Cargo assigned successfully: " + cargoType);
-
-        } catch (CargoSafetyException e) {
-            // Handle unsafe assignment
-            System.out.println("❌ ERROR: " + e.getMessage());
-
-        } finally {
-            // Always executes
-            System.out.println("🔍 Cargo assignment attempt completed for " + getShape() + " bogie.");
         }
+
+        // If not found
+        System.out.println("❌ Bogie ID " + searchKey + " not found.");
+        return false;
     }
 
-    public String getCargo() {
-        return cargo;
-    }
-}
-
-// Rectangular Bogie
-class RectangularBogie extends GoodsBogie {
-    @Override
-    public String getShape() {
-        return "Rectangular";
-    }
-}
-
-// Cylindrical Bogie
-class CylindricalBogie extends GoodsBogie {
-    @Override
-    public String getShape() {
-        return "Cylindrical";
-    }
-}
-
-// Main Application
-public class TrainConsistManagementApp {
     public static void main(String[] args) {
 
-        GoodsBogie rectangular = new RectangularBogie();
-        GoodsBogie cylindrical = new CylindricalBogie();
+        // Sample bogie IDs (unsorted)
+        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
-        // Test Case 1: Safe assignment
-        cylindrical.assignCargo("Petroleum");
+        // Test Case 1: Found in middle
+        searchBogie(bogieIds, "BG309");
 
-        // Test Case 2: Unsafe assignment (handled)
-        rectangular.assignCargo("Petroleum");
+        // Test Case 2: Not found
+        searchBogie(bogieIds, "BG999");
 
-        // Test Case 3: Another safe assignment (program continues)
-        rectangular.assignCargo("Grain");
+        // Test Case 3: First element match
+        searchBogie(bogieIds, "BG101");
 
-        // Verifying cargo storage
-        System.out.println("\nFinal Cargo Status:");
-        System.out.println("Rectangular Bogie Cargo: " + rectangular.getCargo());
-        System.out.println("Cylindrical Bogie Cargo: " + cylindrical.getCargo());
+        // Test Case 4: Last element match
+        searchBogie(bogieIds, "BG550");
+
+        // Test Case 5: Single element array
+        String[] single = {"BG101"};
+        searchBogie(single, "BG101");
     }
 }
